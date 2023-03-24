@@ -1,0 +1,5 @@
+User personalization
+
+As a user, I want the app to cater to my needs by asking for specifics such as my sex,
+age, height, weight, and goals.  My answers will be used in other features of the app 
+such as calorie and water intake, and workout recommendations.
