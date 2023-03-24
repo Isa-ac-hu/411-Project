@@ -1,0 +1,4 @@
+Meal and Workout Reminders
+As a user, I want to set reminders for my workout sessions and daily calorie intake in order to stay on track with my fitness goals. The user will be able to set reminders for their workout sessions and meal times. The reminders can be sent as notifications to their device or as emails.
+
+This will be done by registered email and phone number on the registration page.
