@@ -1,0 +1,4 @@
+As a logged-in user, I want to view my fitness progress in graph format in order to visualize my progress over time.
+The user will be able to see their progress in graph format for their workout sessions and calorie intake. The graph will display data over time, allowing the user to see trends and patterns. The user will also be able to forecast their progress based on their past data.
+
+This will be done through the graphing feature of the application with the help of the database
