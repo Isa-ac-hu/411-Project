@@ -1,0 +1,4 @@
+Location services and walking tracker
+As an avid walker and a person trying to count my calories, I would like the app to be able to see my movements whenever I give it permission, calculate the distance I walk, and use its own algorithms to determine the number of calories I lose from that, to better plan out how many calories I lose.
+
+This is done once location services function on the app, and can calculate the distance I walk, and return some calorie count from it.

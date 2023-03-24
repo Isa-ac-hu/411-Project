@@ -1,0 +1,4 @@
+Calorie counter
+As a person who is trying to lose weight, I would like to have necessary caloric information contained within an easy to use interface, such that I can simply list the food I ate over the course of the day, and the app can tell me what my consumption levels add up to, as opposed to having to manually search for every single item and add them up myself. Recipes with many ingredients should be able to be broken down into their individual components and  calculated all together, as well as by serving. In the end, the process should be very streamlined and return a basic number that can be understood.
+
+I know this is done when a user can simply click the app and see a number indicating their calories.

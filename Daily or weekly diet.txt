@@ -1,0 +1,4 @@
+Daily or weekly diet
+As a user of the app following a somewhat consistent diet, I would like to forgo the process of manually inputting all of my food, and simply design a schedule around what I eat, being able to add or subtract items as I go about it. In this way, the app will slowly shape consistency in my diet that I can utilize to better plan my health routine.
+
+I know this is done when I can manually create a schedule once, and then set it to repeat on some interval.
