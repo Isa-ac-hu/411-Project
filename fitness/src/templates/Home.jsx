@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
 
 const Home = () => {
   return (
-    <div>
-      <h1 className='text-center text-3xl font-bold py-8'>Home Page</h1>
-    </div>
-  )
-}
+    <main>
+      <h1>Welcome to YourFitnessPRO</h1>
+      <p>Start your fitness journey today!</p>
+    </main>
+  );
+};
 
-export default Home
+export default Home;

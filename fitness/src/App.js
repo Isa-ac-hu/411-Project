@@ -5,7 +5,6 @@ import Navbar from './components/Navbar';
 import Protected from './components/Protected';
 import { AuthContextProvider } from './context/AuthContext';
 import Account from './templates/Account';
-import Home from './templates/Home';
 import Signin from './templates/Login';
 
 function App() {
@@ -15,14 +14,17 @@ function App() {
     fetch('/').then(res => res.json()).then(data => setMessage(data.message));
   }, []);
 
+  // this is where we have the routes to the different pages,, html 
+  // code does not go here
   return (
-    <div className="App">
-      <header style={{ backgroundColor: '#f1f1f1', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-        <AuthContextProvider>
-        <Navbar />
+    <AuthContextProvider>
+      <div className="App">
+        <header style={{ backgroundColor: '#f1f1f1', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Navbar />
+          </div>
+        </header>
         <Routes>
-          <Route path='/' element={<Home />} />
           <Route path='/signin' element={<Signin />} />
           <Route
             path='/account'
@@ -33,29 +35,9 @@ function App() {
             }
           />
         </Routes>
-        </AuthContextProvider>
-        </div>
-      </header>
-      <main style={{ padding: '20px', textAlign: 'left' }}>
-        <section style={{ marginBottom: '20px' }}>
-          <h2>Get fit with YourFitnessPRO</h2>
-          <p>Our platform provides personalized fitness plans tailored to your goals and fitness level.</p>
-        </section>
-        <section style={{ marginBottom: '20px' }}>
-          <h2>Features</h2>
-          <ul>
-            <li>Features</li>
-            <li>Features</li>
-            <li>Features</li>
-            <li>Features</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Sign up today</h2>
-          <p>Join our community of fitness enthusiasts today and start your journey to a healthier you.</p>
-        </section>
-      </main>
-    </div>
+        
+      </div>
+    </AuthContextProvider>
   );
 }
 
