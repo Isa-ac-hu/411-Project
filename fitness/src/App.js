@@ -11,10 +11,6 @@ import Home from './templates/Home';
 function App() {
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    fetch('/').then(res => res.json()).then(data => setMessage(data.message));
-  }, []);
-
   return (
     <AuthContextProvider>
       <div className="App">
@@ -34,7 +30,7 @@ function App() {
             }
           />
           <Route path='/' element={<Home />} /> 
-          <Route path='/account' element={<Account />} /> 
+          <Route path='/account' element={<Account />} />  
         </Routes>
         
       </div>

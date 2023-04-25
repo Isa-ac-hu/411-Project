@@ -20,7 +20,8 @@ const Navbar = () => {
           <h1 style={{ fontSize: '48px', margin: '0', fontWeight: 'bold' }}>YourFitnessPRO</h1>
         </div>
         <div>
-          <Link style={{ marginLeft: '1100px' }} to='/'>Home</Link>
+          <br />
+          <Link style={{ marginLeft: '20' }} to='/'>Home</Link>
           {user?.displayName ? (
             <>
               <Link style={{ marginLeft: '10px' }} to='/account'>Profile</Link>
