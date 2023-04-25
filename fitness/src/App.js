@@ -6,6 +6,7 @@ import Protected from './components/Protected';
 import { AuthContextProvider } from './context/AuthContext';
 import Account from './templates/Account';
 import Signin from './templates/Login';
+import Home from './templates/Home'; 
 
 function App() {
   const [message, setMessage] = useState('');
@@ -14,8 +15,6 @@ function App() {
     fetch('/').then(res => res.json()).then(data => setMessage(data.message));
   }, []);
 
-  // this is where we have the routes to the different pages,, html 
-  // code does not go here
   return (
     <AuthContextProvider>
       <div className="App">
@@ -34,6 +33,8 @@ function App() {
               </Protected>
             }
           />
+          <Route path='/' element={<Home />} /> 
+          <Route path='/account' element={<Account />} /> 
         </Routes>
         
       </div>
