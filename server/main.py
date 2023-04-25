@@ -8,19 +8,16 @@ app = Flask(__name__, static_folder="../fitness/public", static_url_path="/")
 # if you run python3 (or python) main.py, localhost 5000 or 127.0.0.1 should start --> this is backend view 
 # if you ran 127.0.0.1:5000/account, you should be able to see the message 
 
-@app.route("/")
-def index():
-    return app.send_static_file("index.html")
+@app.route('/food', methods=['POST'])
+def add_food():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    food_items = data.get('food_items')
+    
+    # do something with user_id and food_items, such as store them in a database
+    
+    return jsonify({'success': True})
 
-@app.route('/signin')
-def signin():
-    message = {'message': 'Hello, cheese buns'}
-    return jsonify(message)
-
-@app.route('/account')
-def account(): 
-    message = {'message': 'If you see this thats good'}
-    return jsonify(message)
 
 if __name__ == '__main__':
     app.run(debug=True)
