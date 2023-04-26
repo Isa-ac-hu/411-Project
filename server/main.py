@@ -15,7 +15,7 @@ def index():
 @app.route('/food', methods=['POST'])
 def add_food():
     data = request.get_json()
-    # Prints the data that was received 
+    # Prints the data that was received in console 
     print(f"Received data: {data}")
     # user_id = data.get('user_id') --> not sure about user_id but some kind of primary key in database 
     food_items = data.get('food_items')

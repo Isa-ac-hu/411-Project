@@ -10,6 +10,7 @@ const Account = () => {
   const [nutritionData, setNutritionData] = useState(null);
   const [weatherError, setWeatherError] = useState(null);
   const [nutritionError, setNutritionError] = useState(null);
+  
   const WEATHER_KEY = '030644053d0b4b67a4422926232504';
   const NUTR_APP_ID = '8664018f'; 
   const NUTR_KEY = '94648b58ab93bcdb0700cd98c3bd137b';
@@ -36,21 +37,29 @@ const Account = () => {
   };
   
   const searchNutritionData = async () => {
+    // Validate user input
+    if (!foodAmount || !foodInput) {
+      setNutritionError('Please enter a valid food item and amount.');
+      return;
+    }
+  
     try {
       const response = await fetch(`https://api.edamam.com/api/nutrition-data?app_id=${NUTR_APP_ID}&app_key=${NUTR_KEY}&ingr=${foodAmount}%20${foodInput}`);
       const data = await response.json();
       if (data.error) {
         setNutritionError(data.error.message);
+      } else if (!data.totalNutrients || !data.totalNutrients.PROCNT || !data.totalNutrients.FAT || !data.totalNutrients.CHOCDF) {
+        setNutritionError('Nutrient information is missing for this food item.');
       } else {
         setNutritionData(data);
-
+  
         const nutritionInfo = {
           calories: data.calories,
           protein: data.totalNutrients.PROCNT.quantity,
           fat: data.totalNutrients.FAT.quantity,
           carbohydrates: data.totalNutrients.CHOCDF.quantity
         }
-
+  
         const response = await fetch('/food', {
           method: 'POST',
           headers: {
@@ -65,7 +74,7 @@ const Account = () => {
             }]
           })
         });
-
+  
         // Check the response from the backend
         const responseData = await response.json();
         console.log(responseData);
@@ -75,7 +84,6 @@ const Account = () => {
       setNutritionError('An error occurred while fetching the nutrition information.');
     }
   };
-
 
   return (
     <div className='w-[300px] m-auto'>
@@ -98,8 +106,8 @@ const Account = () => {
         {weather && (
           <div>
             <h3 style={{ marginLeft: '40px' }}>Weather in {weather.location.name}, {weather.location.country}</h3>
-            <p style={{ marginLeft: '40px' }}>Temperature: {weather.current.temp_f}°F</p>
-            <p style={{ marginLeft: '40px' }}>Feels like: {weather.current.feelslike_f}°F</p>
+            <p style={{ marginLeft: '40px' }}>Temperature: {weather.current.temp_f}°F | {weather.current.temp_c} °C</p>
+            <p style={{ marginLeft: '40px' }}>Feels like: {weather.current.feelslike_f}°F | {weather.current.feelslike_c} °C</p>
             <p style={{ marginLeft: '40px' }}>Condition: {weather.current.condition.text}</p>
           </div>
         )}
