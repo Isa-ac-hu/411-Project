@@ -12,6 +12,7 @@ IDEA 1: Track your workout and fitness progression by using this web application
 
 - pip install flask (or pip) 
 - npm install firebase 
+- pip install firebase-admin
 - npm install --save react-google-button 
 - npm start (opens front end port, make sure you are in fitness directory)
 - (separate terminal) python3 main.py (opens back end port, make sure you are in 411-project directory)
