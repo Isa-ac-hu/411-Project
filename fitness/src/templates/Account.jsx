@@ -13,30 +13,21 @@ const Account = () => {
   const [nutritionError, setNutritionError] = useState(null);
   const userId = auth.currentUser.uid;
   
-  const WEATHER_KEY = '030644053d0b4b67a4422926232504';
-  const NUTR_APP_ID = '8664018f'; 
-  const NUTR_KEY = '94648b58ab93bcdb0700cd98c3bd137b';
-
   const searchWeather = async () => {
     try {
-      let url;
-      if (Number.isInteger(parseInt(location))) {
-        url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_KEY}&q=${location}`;
-      } else {
-        url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_KEY}&q=${location}`;
-      }
-      const response = await fetch(url);
+      const response = await fetch(`/weather?location=${location}`);
       const data = await response.json();
       if (data.error) {
-        setWeatherError(data.error.message);
+        setWeatherError(data.error);
       } else {
         setWeather(data);
+        setWeatherError(null); // reset error to null
       }
     } catch (error) {
       console.error(error);
       setWeatherError('An error occurred while fetching the weather information.');
     }
-  };
+  };  
   
   const searchNutritionData = async () => {
     // Validate user input
@@ -46,44 +37,38 @@ const Account = () => {
     }
   
     try {
-      const response = await fetch(`https://api.edamam.com/api/nutrition-data?app_id=${NUTR_APP_ID}&app_key=${NUTR_KEY}&ingr=${foodAmount}%20${foodInput}`);
+      const response = await fetch('/nutrition', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId,
+          foodAmount,
+          foodInput
+        })
+      });
       const data = await response.json();
       if (data.error) {
         setNutritionError(data.error.message);
-      } else if (!data.totalNutrients || !data.totalNutrients.PROCNT || !data.totalNutrients.FAT || !data.totalNutrients.CHOCDF) {
-        setNutritionError('Nutrient information is missing for this food item.');
+        setNutritionData(null); // reset data to null
       } else {
-        setNutritionData(data);
+        setNutritionData(data.nutrition_info);
+        setNutritionError(null); // reset error to null
   
         const nutritionInfo = {
-          calories: data.calories,
-          protein: data.totalNutrients.PROCNT.quantity,
-          fat: data.totalNutrients.FAT.quantity,
-          carbohydrates: data.totalNutrients.CHOCDF.quantity
+          calories: data.nutrition_info.calories,
+          protein: data.nutrition_info.protein,
+          fat: data.nutrition_info.fat,
+          carbohydrates: data.nutrition_info.carbohydrates
         }
   
-        const response = await fetch('/food', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            food_items: [{
-              name: foodInput,
-              quantity: foodAmount,
-              nutrition_info: nutritionInfo
-            }]
-          })
-        });
-  
-        // Check the response from the backend
-        const responseData = await response.json();
-        console.log(responseData);
+        console.log(nutritionInfo);
       }
     } catch (error) {
       console.error(error);
       setNutritionError('An error occurred while fetching the nutrition information.');
+      setNutritionData(null); // reset data to null
     }
   };
 
@@ -102,58 +87,54 @@ const Account = () => {
         {weatherError && (
           <p style={{ color: 'red', marginLeft: '40px' }}>
             {weatherError}
-            {weather && weatherError && setWeatherError(null)}
           </p>
         )}
         {weather && (
           <div>
             <h3 style={{ marginLeft: '40px' }}>Weather in {weather.location.name}, {weather.location.country}</h3>
-            <p style={{ marginLeft: '40px' }}>Temperature: {weather.current.temp_f}°F | {weather.current.temp_c} °C</p>
-            <p style={{ marginLeft: '40px' }}>Feels like: {weather.current.feelslike_f}°F | {weather.current.feelslike_c} °C</p>
+            <p style={{ marginLeft: '40px' }}>Temperature: {weather.current.temp_f}°F | {weather.current.temp_c}°C</p>
+            <p style={{ marginLeft: '40px' }}>Feels like: {weather.current.feelslike_f}°F | {weather.current.feelslike_c}°C</p>
             <p style={{ marginLeft: '40px' }}>Condition: {weather.current.condition.text}</p>
           </div>
         )}
         <hr />
+        </div>
         <div>
           <p style={{ marginLeft: '40px' }}>YourFitnessPRO's built in calorie counter can help you track and achieve certain calorie goals to lose weight.</p>
           <p style={{ marginLeft: '40px' }}>Lose weight with YourFitnessPRO!</p>
           <input style={{ marginLeft: '40px' }}
-            type='text'
-            placeholder='Enter food'
-            value={foodInput}
-            onChange={(e) => setFoodInput(e.target.value)}
-          />
-          <br />
-          <br />
-          <input style={{ marginLeft: '40px' }}
-            type='text'
-            placeholder='Enter amount in grams'
-            value={foodAmount}
-            onChange={(e) => setFoodAmount(e.target.value)}
-          />
-          <br />
-          <br />
-          <button style={{ marginLeft: '40px' }} onClick={searchNutritionData}>Submit Food!</button>
-          {nutritionError && (
-            <p style={{ color: 'red', marginLeft: '40px' }}>
-              {nutritionError}
-              {nutritionData && nutritionError && setNutritionError(null)}
-            </p>
-          )}
-          {nutritionData && (
-            <div>
-              <h3 style={{ marginLeft: '40px' }}>{nutritionData.totalWeight}g {foodInput} Nutrition Info:</h3>
-              <p style={{ marginLeft: '40px' }}>Calories: {nutritionData.calories}</p>
-              <p style={{ marginLeft: '40px' }}>Protein: {nutritionData.totalNutrients.PROCNT.quantity.toFixed(2)} {nutritionData.totalNutrients.PROCNT.unit}</p>
-              <p style={{ marginLeft: '40px' }}>Fat: {nutritionData.totalNutrients.FAT.quantity.toFixed(2)} {nutritionData.totalNutrients.FAT.unit}</p>
-              <p style={{ marginLeft: '40px' }}>Carbohydrates: {nutritionData.totalNutrients.CHOCDF.quantity.toFixed(2)} {nutritionData.totalNutrients.CHOCDF.unit}</p>
-            </div>
-          )}
-        </div>
+          type='text'
+          placeholder='Enter food'
+          value={foodInput}
+          onChange={(e) => setFoodInput(e.target.value)}
+        /> 
+        <br />
+        <br />
+        <input style={{ marginLeft: '40px' }}
+          type='text'
+          placeholder='Enter amount in grams'
+          value={foodAmount}
+          onChange={(e) => setFoodAmount(e.target.value)}
+        /> 
+        <br />
+        <br />
+        <button style={{ marginLeft: '40px' }} onClick={searchNutritionData}>Submit Food!</button>
+        {nutritionError && (
+          <p style={{ color: 'red', marginLeft: '40px' }}>
+            {nutritionError}
+          </p>
+        )}
+        {nutritionData && (
+          <div>
+            <h3 style={{ marginLeft: '40px' }}>Nutrition information for {foodInput} ({foodAmount})</h3>
+            <p style={{ marginLeft: '40px' }}>Calories: {nutritionData.calories}</p>
+            <p style={{ marginLeft: '40px' }}>Protein: {nutritionData.protein}g</p>
+            <p style={{ marginLeft: '40px' }}>Fat: {nutritionData.fat}g</p>
+            <p style={{ marginLeft: '40px' }}>Carbohydrates: {nutritionData.carbohydrates}g</p>
+          </div>
+        )}
       </div>
     </div>
-  );
-};
-
+  );}
 export default Account;
 
