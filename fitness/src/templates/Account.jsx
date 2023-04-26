@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserAuth } from '../context/AuthContext';
+import { auth } from '../firebase';
 
 const Account = () => {
   const { user } = UserAuth();
@@ -10,6 +11,8 @@ const Account = () => {
   const [nutritionData, setNutritionData] = useState(null);
   const [weatherError, setWeatherError] = useState(null);
   const [nutritionError, setNutritionError] = useState(null);
+  const userId = auth.currentUser.uid;
+
   
   const WEATHER_KEY = '030644053d0b4b67a4422926232504';
   const NUTR_APP_ID = '8664018f'; 
@@ -66,7 +69,7 @@ const Account = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            // user_id: YOUR_USER_ID,
+            user_id: userId,
             food_items: [{
               name: foodInput,
               quantity: foodAmount,
@@ -131,7 +134,7 @@ const Account = () => {
           />
           <br />
           <br />
-          <button style={{ marginLeft: '40px' }} onClick={searchNutritionData}>Get Nutrition Data</button>
+          <button style={{ marginLeft: '40px' }} onClick={searchNutritionData}>Submit Food!</button>
           {nutritionError && (
             <p style={{ color: 'red', marginLeft: '40px' }}>
               {nutritionError}
