@@ -16,7 +16,6 @@ def add_food():
     data = request.get_json()
     uid = data.get('user_id')
     food_items = data.get('food_items')
-    print(data)
     
     # Extract relevant nutrition info
     food_info = {
@@ -36,7 +35,6 @@ def add_food():
     })
 
     return jsonify({'success': True})
-
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect, useState } from "react";
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Protected from './components/Protected';
@@ -9,7 +8,6 @@ import Signin from './templates/Login';
 import Home from './templates/Home'; 
 
 function App() {
-  const [message, setMessage] = useState('');
 
   return (
     <AuthContextProvider>

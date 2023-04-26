@@ -12,7 +12,6 @@ const Account = () => {
   const [weatherError, setWeatherError] = useState(null);
   const [nutritionError, setNutritionError] = useState(null);
   const userId = auth.currentUser.uid;
-
   
   const WEATHER_KEY = '030644053d0b4b67a4422926232504';
   const NUTR_APP_ID = '8664018f'; 
