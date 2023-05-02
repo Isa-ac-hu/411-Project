@@ -12,7 +12,7 @@ function App() {
   return (
     <AuthContextProvider>
       <div className="App">
-        <header style={{ backgroundColor: '#f1f1f1', padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <header style={{ backgroundColor: '#333', padding: '20px', height:'100px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Navbar />
           </div>

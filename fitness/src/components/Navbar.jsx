@@ -16,44 +16,25 @@ const Navbar = () => {
 
   return (
 
-      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', backgroundColor: '#eee', width: '100%'}}>
-      <div className='flex justify-between p-4'>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <h1 style={{ fontSize: '48px', margin: '0', fontWeight: 'bold',  fontFamily: 'Inter' }}>YourFitnessPRO</h1>
-        </div>
-        <div>
-          <br />
-
-            <nav>
-                <ul>
-                    <li><Link to='/'>Home</Link></li>
-                    {user?.displayName ? (
-                        <>
-                            <li><Link to='/account'>Profile</Link></li>
-                            <li><Link to='/signin' onClick={handleSignOut}>Sign out</Link></li>
-                        </>
-                    ) : (
-                        <li><Link to='/signin'>Sign in</Link></li>
-                    )}
-                    <li className="contact"><Link to='/contact'>Contact</Link></li>
-                </ul>
-            </nav>
-
-
-        </div>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <h1 style={{color: "white", fontSize: '30px', margin: '0', marginRight:'900px', fontWeight: 'bold', fontFamily: 'Inter' }}>YourFitnessPRO</h1>
+          <nav>
+              <ul>
+                  <li><Link to='/'>Home</Link></li>
+                  {user?.displayName ? (
+                      <>
+                          <li><Link to='/account'>Profile</Link></li>
+                          <li><Link to='/signin' onClick={handleSignOut}>Sign out</Link></li>
+                      </>
+                  ) : (
+                      <li><Link to='/signin'>Sign in</Link></li>
+                  )}
+                  <li className="contact"><Link to='/contact'>Contact</Link></li>
+              </ul>
+          </nav>
       </div>
-    </div>
+
   );
 };
-// function TopNav() {
-//   return (
-//       <nav>
-//         <a href="#home" className="active">Home</a>
-//         <a href="#about">About</a>
-//         <a href="#contact">Contact</a>
-//         <a href="#news">News</a>
-//         <a href="#blog">Blog</a>
-//       </nav>
-//   );
-// }
+
 export default Navbar;

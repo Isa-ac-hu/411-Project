@@ -6,9 +6,9 @@ const Home = () => {
       <h1 style={{ marginLeft: '20px' }}>Welcome!</h1>
       <p style={{ marginLeft: '20px' }}>Start your fitness journey today! Our website can help you:</p>
       <ul>
-        <li>Count calories and track your nutrition</li>
-        <li>Get the latest weather updates for your workouts</li>
-        <li>Discover healthy recipes and meal plans</li>
+        <il>Count calories and track your nutrition</il>
+        <il>Get the latest weather updates for your workouts</il>
+        <il>Discover healthy recipes and meal plans</il>
       </ul>
     </main>
   );
