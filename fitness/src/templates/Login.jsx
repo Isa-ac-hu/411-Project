@@ -22,12 +22,12 @@ const Signin = () => {
   }, [user]);
 
   return (
-    <div>
-      <h1 className='text-center text-3xl font-bold py-8'>Sign in</h1>
-      <div className='max-w-[240px] m-auto py-4'>
-        <GoogleButton onClick={handleGoogleSignIn} />
+      <div style={{ backgroundColor: "#F8F8F8", padding: "40px", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+        <div style={{ maxWidth: "240px" }}>
+          <h1 style={{ fontFamily: "Montserrat", fontSize: "36px", margin: "0 0 40px" }}>Sign in</h1>
+          <GoogleButton style={{ backgroundColor: "#DB4437", color: "#FFFFFF" }} onClick={handleGoogleSignIn} />
+        </div>
       </div>
-    </div>
   );
 };
 
