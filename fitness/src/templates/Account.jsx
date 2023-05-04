@@ -7,10 +7,12 @@ const Account = () => {
   const [location, setLocation] = useState('');
   const [foodInput, setFoodInput] = useState('');
   const [foodAmount, setFoodAmount] = useState('');
+  const [foodUnit, setFoodUnit] = useState('');
   const [weather, setWeather] = useState(null);
   const [nutritionData, setNutritionData] = useState(null);
   const [weatherError, setWeatherError] = useState(null);
   const [nutritionError, setNutritionError] = useState(null);
+  
   const userId = auth.currentUser.uid;
   
   const searchWeather = async () => {
@@ -45,7 +47,8 @@ const Account = () => {
         body: JSON.stringify({
           userId,
           foodAmount,
-          foodInput
+          foodInput,
+          foodUnit
         })
       });
       const data = await response.json();
@@ -62,7 +65,6 @@ const Account = () => {
           fat: data.nutrition_info.fat,
           carbohydrates: data.nutrition_info.carbohydrates
         }
-  
         console.log(nutritionInfo);
       }
     } catch (error) {
@@ -71,6 +73,8 @@ const Account = () => {
       setNutritionData(null); // reset data to null
     }
   };
+
+  
 
   return (
     <div className='w-[300px] m-auto'>
@@ -112,9 +116,17 @@ const Account = () => {
         <br />
         <input style={{ marginLeft: '40px' }}
           type='text'
-          placeholder='Enter amount in grams'
+          placeholder='Enter amount'
           value={foodAmount}
           onChange={(e) => setFoodAmount(e.target.value)}
+        /> 
+        <br />
+        <br />
+        <input style={{ marginLeft: '40px' }}
+          type='text'
+          placeholder='Enter unit'
+          value={foodUnit}
+          onChange={(e) => setFoodUnit(e.target.value)}
         /> 
         <br />
         <br />
@@ -124,9 +136,12 @@ const Account = () => {
             {nutritionError}
           </p>
         )}
+
+        
+
         {nutritionData && (
           <div>
-            <h3 style={{ marginLeft: '40px' }}>Nutrition information for {foodInput} ({foodAmount})</h3>
+            <h3 style={{ marginLeft: '40px' }}>Nutrition information for {foodInput} ({foodAmount}) {foodUnit}</h3>
             <p style={{ marginLeft: '40px' }}>Calories: {nutritionData.calories}</p>
             <p style={{ marginLeft: '40px' }}>Protein: {nutritionData.protein}g</p>
             <p style={{ marginLeft: '40px' }}>Fat: {nutritionData.fat}g</p>
