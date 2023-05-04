@@ -37,20 +37,45 @@ def get_weather():
     
     return jsonify(data)
 
+def total_calories(uid, data):
+        # Get a reference to the user's document in the "total_calories" collection
+        user_ref = db.collection("total_calories").document(uid)
+
+        # Check if the document already exists, if not, create for user
+        if user_ref.get().exists != True:
+            user_ref.set({
+                'uid': uid,
+                'total_calories': 0
+            })
+        # get current value of total calories
+        user_doc = user_ref.get()
+        current_calories = user_doc.get("total_calories")
+
+        # get current calories and add new to get total
+        new_calories = data['calories']
+        total_calories = current_calories + new_calories
+
+        # Add to total calories of our user
+        ref = db.collection('total_calories').document(uid)
+        ref.update({
+            'total_calories': total_calories
+        })
+
 @app.route('/nutrition', methods=['POST'])
 def get_nutrition_data():
     # Get the food amount and input from the request
     food_amount = request.json.get('foodAmount')
     food_input = request.json.get('foodInput')
+    food_unit = request.json.get('foodUnit')
     uid = request.json.get('userId')
 
     # Validate user input
     if not food_amount or not food_input:
-        return jsonify({'error': 'Please enter a valid food item and amount.'}), 400
+        return jsonify({'error': 'Please enter a valid food item, amount, and unit.'}), 400
 
     try:
         # Make a request to the Nutrition API
-        url = f'https://api.edamam.com/api/nutrition-data?app_id={nutr_app_id}&app_key={nutr_key}&ingr={food_amount}%20{food_input}'
+        url = f'https://api.edamam.com/api/nutrition-data?app_id={nutr_app_id}&app_key={nutr_key}&ingr={food_amount}%20{food_unit}%20{food_input}'
         response = requests.get(url)
 
         # Check the response status code
@@ -66,6 +91,7 @@ def get_nutrition_data():
         nutrition_info = {
             'food_name': food_input,
             'food_qty': food_amount,
+            'food_unit': food_unit,
             'calories': data['calories'],
             'protein': data['totalNutrients']['PROCNT']['quantity'],
             'fat': data['totalNutrients']['FAT']['quantity'],
@@ -79,11 +105,15 @@ def get_nutrition_data():
             'food_info': nutrition_info
         })
 
+        total_calories(uid, data)
+
         return jsonify({'nutrition_info': nutrition_info}), 200
 
     except Exception as e:
         print(e)
         return jsonify({'error': e + 'An error occurred while fetching the nutrition information.'}), 500
 
+
 if __name__ == '__main__':
     app.run(debug=True)
+
