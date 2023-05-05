@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from firebase_admin import credentials, firestore, initialize_app
 from api import NUTR_APP_ID, NUTR_KEY, WEATHER_KEY 
+from datetime import date
 import requests 
 
 app = Flask(__name__, static_folder="../fitness/public", static_url_path="/")
@@ -37,15 +38,50 @@ def get_weather():
     
     return jsonify(data)
 
-def total_calories(uid, data):
+@app.route('/totalCalories', methods=['GET'])
+def getTotalCalories():
+    try:
+        uid = request.args.get('uid')
+        user_ref = db.collection("total_calories").document(uid)
+        todays_date = date.today().strftime('%Y-%m-%d')
+
+        # Check if the document already exists, if not, create for user
+        if not user_ref.get().exists:
+            user_ref.set({
+                'uid': uid,
+                'total_calories': 0,
+                'date': todays_date
+            })
+
+        # Get current value of total calories for today's date
+        user_doc = user_ref.get()
+        current_calories = user_doc.get("total_calories")
+        date_recorded = user_doc.get("date")
+
+        if current_calories == 0:
+            return 400
+    
+        # If the date in the record matches today's date, return total calories
+        if date_recorded == todays_date:
+            return jsonify({'total_calories': current_calories}), 200
+        else:
+            return jsonify({'error': 'No total calories recorded for today.'}), 400
+
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'An error occurred while fetching the total calories.'}), 500
+
+def totalCalories(uid, data):
         # Get a reference to the user's document in the "total_calories" collection
         user_ref = db.collection("total_calories").document(uid)
+        todays_date = date.today().strftime('%Y-%m-%d')
 
         # Check if the document already exists, if not, create for user
         if user_ref.get().exists != True:
             user_ref.set({
                 'uid': uid,
-                'total_calories': 0
+                'total_calories': 0,
+                'date': todays_date
             })
         # get current value of total calories
         user_doc = user_ref.get()
@@ -58,16 +94,18 @@ def total_calories(uid, data):
         # Add to total calories of our user
         ref = db.collection('total_calories').document(uid)
         ref.update({
-            'total_calories': total_calories
+            'total_calories': total_calories,
+            'date': todays_date
         })
 
 @app.route('/nutrition', methods=['POST'])
-def get_nutrition_data():
+def getNutritionData():
     # Get the food amount and input from the request
     food_amount = request.json.get('foodAmount')
     food_input = request.json.get('foodInput')
     food_unit = request.json.get('foodUnit')
-    uid = request.json.get('userId')
+    uid = request.json.get('uid')
+    todays_date = date.today().strftime('%Y-%m-%d')
 
     # Validate user input
     if not food_amount or not food_input:
@@ -95,7 +133,8 @@ def get_nutrition_data():
             'calories': data['calories'],
             'protein': data['totalNutrients']['PROCNT']['quantity'],
             'fat': data['totalNutrients']['FAT']['quantity'],
-            'carbohydrates': data['totalNutrients']['CHOCDF']['quantity']
+            'carbohydrates': data['totalNutrients']['CHOCDF']['quantity'],
+            'date': todays_date
         }
 
         # Inserting into firebase 
@@ -105,7 +144,7 @@ def get_nutrition_data():
             'food_info': nutrition_info
         })
 
-        total_calories(uid, data)
+        totalCalories(uid, data)
 
         return jsonify({'nutrition_info': nutrition_info}), 200
 
