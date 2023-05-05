@@ -6,7 +6,8 @@ import { AuthContextProvider } from './context/AuthContext';
 import Account from './templates/Account';
 import Signin from './templates/Login';
 import Home from './templates/Home'; 
-import Contact from './templates/Contact'
+import Contact from './templates/Contact';
+import TotalCal from './templates/TotalCal';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             }
           />
           <Route path='/' element={<Home />} /> 
+          <Route path='/totalcal' element={<TotalCal />} /> 
           <Route path='/contact' element={<Contact />} /> 
           <Route path='/account' element={<Account />} />  
         </Routes>

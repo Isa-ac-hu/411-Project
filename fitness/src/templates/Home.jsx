@@ -8,7 +8,6 @@ const Home = () => {
       <ul>
         <il>Count calories and track your nutrition</il>
         <il>Get the latest weather updates for your workouts</il>
-        <il>Discover healthy recipes and meal plans</il>
       </ul>
     </main>
   );

@@ -12,7 +12,7 @@ const Account = () => {
   const [nutritionData, setNutritionData] = useState(null);
   const [weatherError, setWeatherError] = useState(null);
   const [nutritionError, setNutritionError] = useState(null);
-  const userId = auth.currentUser ? auth.currentUser.uid : null;
+  const uid = auth.currentUser ? auth.currentUser.uid : null;
   
   const searchWeather = async () => {
     try {
@@ -44,7 +44,7 @@ const Account = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          userId,
+          uid,
           foodAmount,
           foodInput,
           foodUnit
@@ -53,10 +53,10 @@ const Account = () => {
       const data = await response.json();
       if (data.error) {
         setNutritionError(data.error.message);
-        setNutritionData(null); // reset data to null
+        setNutritionData(null); 
       } else {
         setNutritionData(data.nutrition_info);
-        setNutritionError(null); // reset error to null
+        setNutritionError(null); 
   
         const nutritionInfo = {
           calories: data.nutrition_info.calories,
@@ -69,11 +69,9 @@ const Account = () => {
     } catch (error) {
       console.error(error);
       setNutritionError('An error occurred while fetching the nutrition information.');
-      setNutritionData(null); // reset data to null
+      setNutritionData(null);
     }
   };
-
-  
 
   return (
     <div className='w-[300px] m-auto'>
@@ -135,9 +133,6 @@ const Account = () => {
             {nutritionError}
           </p>
         )}
-
-        
-
         {nutritionData && (
           <div>
             <h3 style={{ marginLeft: '40px' }}>Nutrition information for {foodInput} ({foodAmount}) {foodUnit}</h3>

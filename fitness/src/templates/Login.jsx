@@ -19,12 +19,13 @@ const Signin = () => {
     if (user != null) {
       navigate('/account');
     }
-  }, [user]);
+  }, [user, navigate]);
+  
 
   return (
-      <div style={{ backgroundColor: "#F8F8F8", padding: "40px", display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+      <div style={{ backgroundColor: "#F8F8F8", padding: "40px", display: "flex", justifyContent: "center", minHeight: "100vh" }}>
         <div style={{ maxWidth: "240px" }}>
-          <h1 style={{ fontFamily: "Montserrat", fontSize: "36px", margin: "0 0 40px" }}>Sign in</h1>
+          <h1 style={{ fontFamily: "Montserrat", fontSize: "36px", margin: "0 0 30px" }}>Sign in</h1>
           <GoogleButton style={{ backgroundColor: "#DB4437", color: "#FFFFFF" }} onClick={handleGoogleSignIn} />
         </div>
       </div>
