@@ -6,6 +6,7 @@ import { AuthContextProvider } from './context/AuthContext';
 import Account from './templates/Account';
 import Signin from './templates/Login';
 import Home from './templates/Home'; 
+import Contact from './templates/Contact'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             }
           />
           <Route path='/' element={<Home />} /> 
+          <Route path='/contact' element={<Contact />} /> 
           <Route path='/account' element={<Account />} />  
         </Routes>
         
