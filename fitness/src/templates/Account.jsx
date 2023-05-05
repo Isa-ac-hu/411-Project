@@ -12,8 +12,7 @@ const Account = () => {
   const [nutritionData, setNutritionData] = useState(null);
   const [weatherError, setWeatherError] = useState(null);
   const [nutritionError, setNutritionError] = useState(null);
-  
-  const userId = auth.currentUser.uid;
+  const userId = auth.currentUser ? auth.currentUser.uid : null;
   
   const searchWeather = async () => {
     try {
