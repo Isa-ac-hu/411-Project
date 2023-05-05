@@ -32,8 +32,8 @@ const Account = () => {
   
   const searchNutritionData = async () => {
     // Validate user input
-    if (!foodAmount || !foodInput) {
-      setNutritionError('Please enter a valid food item and amount.');
+    if (!foodAmount || !foodInput || !foodUnit) {
+      setNutritionError('Please enter a valid food item, amount, and unit of measurement.');
       return;
     }
   
